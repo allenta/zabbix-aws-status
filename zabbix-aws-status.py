@@ -90,8 +90,6 @@ import time
 import sys
 import json
 
-ec2 = boto3.resource('ec2')
-
 # Filter only our own resources
 FILTER_OWN_RESOURCES = [{
     'Name': 'owner-id',
@@ -113,7 +111,9 @@ def flatten(d, parent_key='', separator='.'):
 
     return dict(items)
 
-def extract_data():
+def extract_data(options):
+
+    ec2 = boto3.resource('ec2', region_name=options.region)    
 
     result = {
         'instances': {
@@ -155,7 +155,7 @@ def extract_data():
             result['instances']['type'][instance_type] = 1
     
     
-    ec2_client = boto3.client('ec2')
+    ec2_client = boto3.client('ec2', region_name=options.region)
     
     addresses = ec2_client.describe_addresses()
     for address in addresses['Addresses']:
@@ -192,7 +192,7 @@ def discover(options):
         'data': [],
     }
 
-    result = extract_data()
+    result = extract_data(options)
 
     for instance_type in set(result['instances']['type']):
         discovery['data'].append({
@@ -204,7 +204,7 @@ def discover(options):
 def send(options):
     now = int(time.time())
 
-    result = flatten(extract_data())
+    result = flatten(extract_data(options))
 
     data = ''
     for k, v in result.items():
@@ -245,6 +245,9 @@ def main():
         description='Zabbix AWS Status extractor.'
     )
     parser.add_argument('-v', action='store_true', help="Increase verbosity")
+    parser.add_argument('-r', '--region', dest='region',
+                        type=str, required=False, default="eu-west-1",
+                        help='AWS region')
 
     subparsers = parser.add_subparsers(dest='command')
 
