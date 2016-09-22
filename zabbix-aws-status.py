@@ -207,9 +207,14 @@ def discover(options):
         'data': [],
     }
 
+    if options.region:
+        target_regions = [options.region]
+    else:
+        target_regions = REGIONS.keys()
+
     if options.subject == 'instances':
 
-        for region in REGIONS.keys():
+        for region in target_regions:
             result = extract_data(region)
 
             for instance_type in set(result['instances']['type']):
@@ -220,7 +225,7 @@ def discover(options):
 
     elif options.subject == 'regions':
 
-        for region in REGIONS.keys():
+        for region in target_regions:
             result = extract_data(region)
 
             discovery['data'].append({
@@ -276,7 +281,7 @@ def main():
     )
     parser.add_argument('-v', action='store_true', help="Increase verbosity")
     parser.add_argument('-r', '--region', dest='region',
-                        type=str, required=False, default="eu-west-1",
+                        type=str, required=False, default=None,
                         help='AWS region')
 
     subparsers = parser.add_subparsers(dest='command')
