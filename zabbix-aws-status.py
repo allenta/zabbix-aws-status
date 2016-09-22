@@ -96,8 +96,23 @@ FILTER_OWN_RESOURCES = [{
     'Values': ['574965702452']
 }]
 
+REGIONS = {
+    'us-east-1': 'US East (N. Virginia)',
+    'us-west-2': 'US West (Oregon)',
+    'us-west-1': 'US West (N. California)',
+    'eu-west-1': 'EU (Ireland)',
+    'eu-central-1': 'EU (Frankfurt)',
+    'ap-southeast-1': 'Asia Pacific (Singapore)',
+    'ap-northeast-1': 'Asia Pacific (Tokyo)',
+    'ap-southeast-2': 'Asia Pacific (Sydney)',
+    'ap-northeast-2': 'Asia Pacific (Seoul)',
+    'ap-south-1': 'Asia Pacific (Mumbai)',
+    'sa-east-1': 'South America (São Paulo)'
+}
+
 SUBJECTS = {
-    'items': None,
+    'instances': None,
+    'regions': None,
 }
 
 def flatten(d, parent_key='', separator='.'):
@@ -111,9 +126,9 @@ def flatten(d, parent_key='', separator='.'):
 
     return dict(items)
 
-def extract_data(options):
+def extract_data(region):
 
-    ec2 = boto3.resource('ec2', region_name=options.region)    
+    ec2 = boto3.resource('ec2', region_name=region)    
 
     result = {
         'instances': {
@@ -139,7 +154,7 @@ def extract_data(options):
     
     for instance in instances:
         if instance.monitoring['State'] in result['instances']['monitoring']:
-            result['instances']['monitoring'][instance.monitoring['State']] += 1
+                result['instances']['monitoring'][instance.monitoring['State']] += 1
         else:
             result['instances']['monitoring'][instance.monitoring['State']] = 1
     
@@ -155,7 +170,7 @@ def extract_data(options):
             result['instances']['type'][instance_type] = 1
     
     
-    ec2_client = boto3.client('ec2', region_name=options.region)
+    ec2_client = boto3.client('ec2', region_name=region)
     
     addresses = ec2_client.describe_addresses()
     for address in addresses['Addresses']:
@@ -192,23 +207,35 @@ def discover(options):
         'data': [],
     }
 
-    result = extract_data(options)
+    if options.subject == 'instances':
 
-    for instance_type in set(result['instances']['type']):
-        discovery['data'].append({
-            '{#INSTANCETYPE}': instance_type
-        })
+        result = extract_data(options.region)
+
+        for instance_type in set(result['instances']['type']):
+            discovery['data'].append({
+                '{#AWSREGION}': options.region,
+                '{#INSTANCETYPE}': instance_type
+            })
+    elif options.subject == 'regions':
+        for region in REGIONS.keys():
+            result = extract_data(region)
+
+            discovery['data'].append({
+                '{#AWSREGION}': region,
+                '{#AWSREGION_NAME}': REGIONS[region]
+            })
 
     sys.stdout.write(json.dumps(discovery, sort_keys=True, indent=2))
 
 def send(options):
     now = int(time.time())
 
-    result = flatten(extract_data(options))
+    result = flatten(extract_data(options.region))
 
     data = ''
     for k, v in result.items():
-        row = '- aws.stat["%(key)s"] %(tst)d %(value)d\n' % {
+        row = '- aws.stat["%(region)s","%(key)s"] %(tst)d %(value)d\n' % {
+            'region': options.region,
             'key': k,
             'tst': now,
             'value': v,
