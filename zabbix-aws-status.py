@@ -209,14 +209,17 @@ def discover(options):
 
     if options.subject == 'instances':
 
-        result = extract_data(options.region)
+        for region in REGIONS.keys():
+            result = extract_data(region)
 
-        for instance_type in set(result['instances']['type']):
-            discovery['data'].append({
-                '{#AWSREGION}': options.region,
-                '{#INSTANCETYPE}': instance_type
-            })
+            for instance_type in set(result['instances']['type']):
+                discovery['data'].append({
+                    '{#AWSREGION}': region,
+                    '{#INSTANCETYPE}': instance_type
+                })
+
     elif options.subject == 'regions':
+
         for region in REGIONS.keys():
             result = extract_data(region)
 
