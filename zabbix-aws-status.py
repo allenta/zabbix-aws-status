@@ -248,14 +248,15 @@ def send(options):
 
     result = flatten(extract_data(options.region))
 
-    data = ''
+    data = ''.encode()
     for k, v in result.items():
-        row = '- aws.stat["%(region)s","%(key)s"] %(tst)d %(value)d\n' % {
+        row = '- aws.stats["%(region)s","%(key)s"] %(tst)d %(value)d\n' % {
             'region': options.region,
             'key': k,
             'tst': now,
             'value': v,
         }
+        data += row.encode()
         sys.stdout.write(row)
 
     command = 'zabbix_sender -T -r -i - %(config)s %(server)s %(port)s %(host)s' % {
@@ -274,10 +275,17 @@ def send(options):
     }
     process = subprocess.Popen(
         command,
+        shell=True,
         stdout=subprocess.PIPE,
         stdin=subprocess.PIPE,
-        stderr=subprocess.PIPE)
+        stderr=subprocess.STDOUT)
     stdout_data = process.communicate(input=data)[0]
+
+    if process.returncode == 0:
+        sys.stdout.write(stdout_data.decode('utf-8'))
+    else:
+        sys.stderr.write(stdout_data.decode('utf-8'))
+        sys.exit(1)
 
 
 def main():
