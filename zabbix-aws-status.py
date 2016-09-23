@@ -111,7 +111,7 @@ REGIONS = {
 }
 
 SUBJECTS = {
-    'items': None,
+    'instancetypes': None,
     'regions': None,
 }
 
@@ -212,7 +212,7 @@ def discover(options):
     else:
         target_regions = REGIONS.keys()
 
-    if options.subject == 'items':
+    if options.subject == 'instancetypes':
 
         for region in target_regions:
             result = extract_data(region)
