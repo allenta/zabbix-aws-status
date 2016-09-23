@@ -258,8 +258,6 @@ def send(options):
         }
         sys.stdout.write(row)
 
-    return None
-
     command = 'zabbix_sender -T -r -i - %(config)s %(server)s %(port)s %(host)s' % {
         'config':
             '-c "%s"' % options.zabbix_config
