@@ -228,10 +228,16 @@ def discover(options):
         for region in target_regions:
             result = extract_data(region)
 
-            discovery['data'].append({
-                '{#AWSREGION}': region,
-                '{#AWSREGION_NAME}': REGIONS[region]
-            })
+            # Check if there is resources in that region
+            if (result['volumes']['size'] > 0 or
+                    result['snapshots']['size'] > 0 or
+                    result['addresses']['total'] > 0 or
+                    result['instances']['type']):
+
+                discovery['data'].append({
+                    '{#AWSREGION}': region,
+                    '{#AWSREGION_NAME}': REGIONS[region]
+                })
 
     sys.stdout.write(json.dumps(discovery, sort_keys=True, indent=2))
 
