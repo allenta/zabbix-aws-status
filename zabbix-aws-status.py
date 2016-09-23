@@ -115,6 +115,7 @@ SUBJECTS = {
     'regions': None,
 }
 
+
 def flatten(d, parent_key='', separator='.'):
     items = []
     for k, v in d.items():
@@ -126,9 +127,10 @@ def flatten(d, parent_key='', separator='.'):
 
     return dict(items)
 
+
 def extract_data(region):
 
-    ec2 = boto3.resource('ec2', region_name=region)    
+    ec2 = boto3.resource('ec2', region_name=region)
 
     result = {
         'instances': {
@@ -149,58 +151,57 @@ def extract_data(region):
             'size': 0
         }
     }
-    
+
     instances = ec2.instances.all()
-    
+
     for instance in instances:
         if instance.monitoring['State'] in result['instances']['monitoring']:
                 result['instances']['monitoring'][instance.monitoring['State']] += 1
         else:
             result['instances']['monitoring'][instance.monitoring['State']] = 1
-    
+
         if instance.state['Name'] in result['instances']['state']:
             result['instances']['state'][instance.state['Name']] += 1
         else:
             result['instances']['state'][instance.state['Name']] = 1
-        
+
         instance_type = instance.instance_type.replace('.', '_')
         if instance_type in result['instances']['type']:
             result['instances']['type'][instance_type] += 1
         else:
             result['instances']['type'][instance_type] = 1
-    
-    
+
     ec2_client = boto3.client('ec2', region_name=region)
-    
+
     addresses = ec2_client.describe_addresses()
     for address in addresses['Addresses']:
         if address.get('AllocationId'):
             result['addresses']['allocated'] += 1
         if address.get('PublicIp'):
             result['addresses']['total'] += 1
-    
-    
+
     snapshots = ec2.snapshots.filter(Filters=FILTER_OWN_RESOURCES)
-    
+
     for s in snapshots:
         if s.state in result['snapshots']['state']:
             result['snapshots']['state'][s.state] += 1
         else:
             result['snapshots']['state'][s.state] = 1
-    
+
         result['snapshots']['size'] += s.volume_size
-    
+
     volumes = ec2.volumes.all()
-    
+
     for v in volumes:
         if v.state in result['volumes']['state']:
             result['volumes']['state'][v.state] += 1
         else:
             result['volumes']['state'][v.state] = 1
-    
+
         result['volumes']['size'] += v.size
 
     return result
+
 
 def discover(options):
     discovery = {
@@ -240,6 +241,7 @@ def discover(options):
                 })
 
     sys.stdout.write(json.dumps(discovery, sort_keys=True, indent=2))
+
 
 def send(options):
     now = int(time.time())
