@@ -90,11 +90,6 @@ import time
 import sys
 import json
 
-# Filter only our own resources
-FILTER_OWN_RESOURCES = [{
-    'Name': 'owner-id',
-    'Values': ['574965702452']
-}]
 
 REGIONS = {
     'us-east-1': 'US East (N. Virginia)',
@@ -128,7 +123,7 @@ def flatten(d, parent_key='', separator='.'):
     return dict(items)
 
 
-def extract_data(region):
+def extract_data(region, owner_id=None):
 
     ec2 = boto3.resource('ec2', region_name=region)
 
@@ -201,7 +196,15 @@ def extract_data(region):
         if address.get('PublicIp'):
             result['addresses']['total'] += 1
 
-    snapshots = ec2.snapshots.filter(Filters=FILTER_OWN_RESOURCES)
+    if owner_id:
+        resource_filter = [{
+            'Name': 'owner-id',
+            'Values': owner_id.split(',')
+        }]
+    else:
+        resource_filter = []
+
+    snapshots = ec2.snapshots.filter(Filters=resource_filter)
 
     for s in snapshots:
         if s.state in result['snapshots']['state']:
@@ -237,7 +240,7 @@ def discover(options):
     if options.subject == 'instancetypes':
 
         for region in target_regions:
-            result = extract_data(region)
+            result = extract_data(region, owner_id=options.owner_id)
 
             for instance_type in set(result['instances']['type']):
                 discovery['data'].append({
@@ -248,7 +251,7 @@ def discover(options):
     elif options.subject == 'regions':
 
         for region in target_regions:
-            result = extract_data(region)
+            result = extract_data(region, owner_id=options.owner_id)
 
             # Check if there is resources in that region
             if (result['volumes']['size'] > 0 or
@@ -267,7 +270,7 @@ def discover(options):
 def send(options):
     now = int(time.time())
 
-    result = flatten(extract_data(options.region))
+    result = flatten(extract_data(options.region, owner_id=options.owner_id))
 
     data = ''.encode()
     for k, v in result.items():
@@ -318,6 +321,9 @@ def main():
     parser.add_argument('-r', '--region', dest='region',
                         type=str, required=False, default=None,
                         help='AWS region')
+    parser.add_argument('-o', '--owner-id', dest='owner_id',
+                        type=str, required=False, default=None,
+                        help='Owner id(s). Comma separated ids.')
 
     subparsers = parser.add_subparsers(dest='command')
 
