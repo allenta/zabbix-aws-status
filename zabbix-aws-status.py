@@ -134,8 +134,18 @@ def extract_data(region):
 
     result = {
         'instances': {
-            'monitoring': dict(),
-            'state': dict(),
+            'monitoring': {
+                'enabled': 0,
+                'disabled': 0
+            },
+            'state': {
+                'pending': 0,
+                'running': 0,
+                'shutting-down': 0,
+                'stopping': 0,
+                'stopped': 0,
+                'terminated': 0
+            },
             'type': dict()
         },
         'addresses': {
@@ -143,11 +153,22 @@ def extract_data(region):
             'total': 0
         },
         'snapshots': {
-            'state': dict(),
+            'state': {
+                'completed': 0,
+                'error': 0,
+                'pending': 0
+            },
             'size': 0
         },
         'volumes': {
-            'state': dict(),
+            'state': {
+                'available': 0,
+                'creating': 0,
+                'deleted': 0,
+                'deleting': 0,
+                'error': 0,
+                'in-use': 0
+            },
             'size': 0
         }
     }
