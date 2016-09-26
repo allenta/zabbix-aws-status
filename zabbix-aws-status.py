@@ -171,21 +171,36 @@ def extract_data(region, owner_id=None):
     instances = ec2.instances.all()
 
     for instance in instances:
+
+        # Instance by monitoring state
         if instance.monitoring['State'] in result['instances']['monitoring']:
                 result['instances']['monitoring'][instance.monitoring['State']] += 1
         else:
             result['instances']['monitoring'][instance.monitoring['State']] = 1
 
+        # Instances by type
+        instance_type = instance.instance_type.replace('.', '_')
+        if instance_type in result['instances']['type']:
+            result['instances']['type'][instance_type]['total'] += 1
+        else:
+            result['instances']['type'][instance_type] = {
+                'total': 1,
+                'pending': 0,
+                'running': 0,
+                'shutting-down': 0,
+                'stopping': 0,
+                'stopped': 0,
+                'terminated': 0
+            }
+
+        # Instances state by type
+        result['instances']['type'][instance_type][instance.state['Name']] += 1
+
+        # Instances by state
         if instance.state['Name'] in result['instances']['state']:
             result['instances']['state'][instance.state['Name']] += 1
         else:
             result['instances']['state'][instance.state['Name']] = 1
-
-        instance_type = instance.instance_type.replace('.', '_')
-        if instance_type in result['instances']['type']:
-            result['instances']['type'][instance_type] += 1
-        else:
-            result['instances']['type'][instance_type] = 1
 
     ec2_client = boto3.client('ec2', region_name=region)
 
