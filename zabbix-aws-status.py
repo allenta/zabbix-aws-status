@@ -90,6 +90,9 @@ import time
 import sys
 import json
 
+import threading
+from queue import Queue
+
 
 REGIONS = {
     'us-east-1': 'US East (N. Virginia)',
@@ -109,6 +112,16 @@ SUBJECTS = {
     'instancetypes': None,
     'regions': None,
 }
+
+# Forgive me $deity for this global
+discovery = {
+    'data': [],
+}
+
+# lock to serialize acces to discovery
+lock = threading.Lock()
+# Create the queue
+q = Queue()
 
 
 def flatten(d, parent_key='', separator='.'):
@@ -242,22 +255,17 @@ def extract_data(region, owner_id=None):
     return result
 
 
-def discover(options):
-    discovery = {
-        'data': [],
-    }
+def discover_region(region, options):
+    global discovery
 
-    if options.region:
-        target_regions = [options.region]
-    else:
-        target_regions = REGIONS.keys()
+    # pretend to do some lengthy work.
+    result = extract_data(region, owner_id=options.owner_id)
 
     if options.subject == 'instancetypes':
 
-        for region in target_regions:
-            result = extract_data(region, owner_id=options.owner_id)
-
-            for instance_type in set(result['instances']['type']):
+        for instance_type in set(result['instances']['type']):
+            # Lock before updating
+            with lock:
                 discovery['data'].append({
                     '{#AWSREGION}': region,
                     '{#INSTANCETYPE}': instance_type
@@ -265,19 +273,47 @@ def discover(options):
 
     elif options.subject == 'regions':
 
-        for region in target_regions:
-            result = extract_data(region, owner_id=options.owner_id)
+        # Check if there is resources in that region
+        if (result['volumes']['size'] > 0 or
+                result['snapshots']['size'] > 0 or
+                result['addresses']['total'] > 0 or
+                result['instances']['type']):
 
-            # Check if there is resources in that region
-            if (result['volumes']['size'] > 0 or
-                    result['snapshots']['size'] > 0 or
-                    result['addresses']['total'] > 0 or
-                    result['instances']['type']):
-
+            # Lock before updating
+            with lock:
                 discovery['data'].append({
                     '{#AWSREGION}': region,
                     '{#AWSREGION_NAME}': REGIONS[region]
                 })
+
+
+# The worker thread pulls an item from the queue and processes it
+def discover_worker():
+    while True:
+        (region, options) = q.get()
+        discover_region(region, options)
+        q.task_done()
+
+
+def discover(options):
+    global discovery
+
+    if options.region:
+        target_regions = [options.region]
+    else:
+        target_regions = REGIONS.keys()
+
+    # Thread per region
+    for i in range(len(target_regions)):
+        t = threading.Thread(target=discover_worker, daemon=True)
+        t.start()
+
+    # stuff work items on the queue.
+    for region in target_regions:
+        q.put([region, options])
+
+    # block until all tasks are done
+    q.join()
 
     sys.stdout.write(json.dumps(discovery, sort_keys=True, indent=2))
 
