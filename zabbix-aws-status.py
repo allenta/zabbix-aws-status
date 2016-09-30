@@ -138,7 +138,8 @@ def flatten(d, parent_key='', separator='.'):
 
 def extract_data(region, owner_id=None):
 
-    ec2 = boto3.resource('ec2', region_name=region)
+    session = boto3.session.Session()
+    ec2 = session.resource('ec2', region_name=region)
 
     result = {
         'instances': {
@@ -215,7 +216,7 @@ def extract_data(region, owner_id=None):
         else:
             result['instances']['state'][instance.state['Name']] = 1
 
-    ec2_client = boto3.client('ec2', region_name=region)
+    ec2_client = session.client('ec2', region_name=region)
 
     addresses = ec2_client.describe_addresses()
     for address in addresses['Addresses']:
