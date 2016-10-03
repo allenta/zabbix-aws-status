@@ -1,86 +1,10 @@
 #!/usr/bin/env python
 
-# Metrics to monitor
-#  Total non-public AMI images
-#  Total public AMI images
-#  Total AMI images
-#  EC2 Instances - Total with monitoring disabled
-#  EC2 Instances - Total with monitoring disabling
-#  EC2 Instances - Total with monitoring enabled
-#  EC2 Instances - Total with monitoring pending
-#  EC2 Instances - Total in pending state
-#  EC2 Instances - Total unavailable due to InstanceInitiatedShutdown
-#  EC2 Instances - Total unavailable due to InternalError (internal to instance)
-#  EC2 Instances - Total unavailable due to InvalidSnapshot
-#  EC2 Instances - Total unavailable due to UserInitiatedShutdown
-#  EC2 Instances - Total unavailable due to VolumeLimitExceeded
-#  EC2 Instances - Total unavailable due to InsufficientInstanceCapacity
-#  EC2 Instances - Total unavailable due to InternalError
-#  EC2 Instances - Total unavailable due to SpotInstanceTermination
-#  EC2 Instances - Total in running state
-#  EC2 Instances - Total in shutting-down state
-#  EC2 Instances - Total in stopped state
-#  EC2 Instances - Total in stopping state
-#  EC2 Instances - Total in terminated state
-#  EC2 Instances - Total of type c1.medium
-#  EC2 Instances - Total of type c1.xlarge
-#  EC2 Instances - Total of type cc1.4xlarge
-#  EC2 Instances - Total of type cg1.4xlarge
-#  EC2 Instances - Total of type m1.large
-#  EC2 Instances - Total of type m1.medium
-#  EC2 Instances - Total of type m1.small
-#  EC2 Instances - Total of type m1.xlarge
-#  EC2 Instances - Total of type m2.2xlarge
-#  EC2 Instances - Total of type m2.4xlarge
-#  EC2 Instances - Total of type m2.xlarge
-#  EC2 Instances - Total of type t1.micro
-#  EC2 Instances - Total without monitoring
-#  EC2 Elastic IP Addresses - Total assigned to instances
-#  EC2 Elastic IP Addresses - Total
-#  EC2 Elastic IP Addresses - Total unassigned/free
-#  EC2 Reserved Instances - Total
-#  EC2 Reserved Instances - Total of type c1.medium
-#  EC2 Reserved Instances - Total of type c1.xlarge
-#  EC2 Reserved Instances - Total of type m1.large
-#  EC2 Reserved Instances - Total of type m1.medium
-#  EC2 Reserved Instances - Total of type m1.small
-#  EC2 Reserved Instances - Total of type m2.2xlarge
-#  EC2 Reserved Instances - Total of type m2.4xlarge
-#  EC2 Reserved Instances - Total of type other
-#  EC2 Snapshots - Total Size GB
-#  EC2 Snapshots - Total in status completed
-#  EC2 Snapshots - Total in status error
-#  EC2 Snapshots - Total in status pending
-#  EC2 Snapshots - Total
-#  EC2 Snapshots (Amazon-owned) - Total size GB
-#  EC2 Snapshots (Amazon-owned) - Total in status completed
-#  EC2 Snapshots (Amazon-owned) - Total in status error
-#  EC2 Snapshots (Amazon-owned) - Total in status pending
-#  EC2 Snapshots (Amazon-owned) - Total
-#  EC2 Snapshots (owned by others) - Total size GB
-#  EC2 Snapshots (owned by others) - Total in status completed
-#  EC2 Snapshots (owned by others) - Total in status error
-#  EC2 Snapshots (owned by others) - Total in status pending
-#  EC2 Snapshots (owned by others) - Total
-#  EC2 Snapshots (self-owned) - Total size GB
-#  EC2 Snapshots (self-owned) - Total in status completed
-#  EC2 Snapshots (self-owned) - Total in status error
-#  EC2 Snapshots (self-owned) - Total in status pending
-#  EC2 Snapshots (self-owned) - Total
-#  EC2 Volumes - Total in attached state
-#  EC2 Volumes - Total size (GB) of volumes in attached state
-#  EC2 Volumes - Total in attaching state
-#  EC2 Volumes - Total size (GB) of volumes in attaching state
-#  EC2 Volumes - Total in detached state
-#  EC2 Volumes - Total size (GB) of volumes in detached state
-#  EC2 Volumes - Total in detaching state
-#  EC2 Volumes - Total size (GB) of volumes in detaching state
-#  EC2 Volumes - Total in status available
-#  EC2 Volumes - Total size (GB) of volumes in status available
-#  EC2 Volumes - Total in status creating
-#  EC2 Volumes - Total size (GB) of volumes in status creating
-#  EC2 Volumes - Total in status other
-#  EC2 Volumes - Total size (GB) of volumes in status other
+'''
+:url: https://github.com/allenta/zabbix-aws-status
+:copyright: (c) 2016 by Allenta Consulting S.L. <info@allenta.com>.
+:license: BSD, see LICENSE.txt for more details.
+'''
 
 import boto3
 import collections
