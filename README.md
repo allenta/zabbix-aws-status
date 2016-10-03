@@ -2,7 +2,7 @@
 
 ## Installation
 
-1. Copy ``zabbix-aws-status`` to ``/usr/local/bin/``, and make it executable.
+1. Copy ``zabbix-aws-status.py`` to ``/usr/local/bin/``, and make it executable.
 
 2. Install AWS SDK for Python3 using Virtualenv or an equivalent method:
 
