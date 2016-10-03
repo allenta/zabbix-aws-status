@@ -1,5 +1,11 @@
 # Zabbix AWS Status
 
+## Requirements
+
+* Python 3
+* [AWS SDK for Python 3](https://aws.amazon.com/sdk-for-python/)
+* [Zabbix sender](https://www.zabbix.com/documentation/3.0/manual/concepts/sender)
+
 ## Installation
 
 1. Copy ``zabbix-aws-status.py`` to ``/usr/local/bin/``, and make it executable.
@@ -13,7 +19,7 @@
 3. Add the ``awsstats.discovery`` user parameters to Zabbix agent. This agent must have permissions to access the AWS API through instance role or AccessKey/SecretKey pair:
 
   ```
-  UserParameter=awsstats.discovery[*],. /usr/local/lib/zabbix-aws-status/bin/activate && python /usr/local/bin/zabbix-aws-status.py -r '$1' -o '$2' discover $3
+  UserParameter=awsstats.discovery[*],. /usr/local/lib/zabbix-aws-status/bin/activate && /usr/local/bin/zabbix-aws-status.py -r '$1' -o '$2' discover $3
   ```
 	
   You can check if you hace the right permission using AWS CLI:
@@ -26,7 +32,7 @@
 
 5. Add required jobs to the ``zabbix`` user crontab. This will send AWS metrics through Zabbix Sender:
   ```
-  * * *  * * root . /usr/local/lib/zabbix-aws-status/bin/activate && python /usr/local/bin/zabbix-aws-status.py -r eu-west-1 -o 574965702452 send -c /etc/zabbix/zabbix_agentd.conf > /dev/null 2>&1
+  * * *  * * root . /usr/local/lib/zabbix-aws-status/bin/activate && /usr/local/bin/zabbix-aws-status.py -r eu-west-1 -o 574965702452 send -c /etc/zabbix/zabbix_agentd.conf > /dev/null 2>&1
   ```
   It's recommended that you add one cron job per used region so you can avoid trying to get data from unused regions.
 
