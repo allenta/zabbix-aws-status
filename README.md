@@ -53,6 +53,7 @@ This is a sample of the data that can be retrieved by zabbix-aws-status into Zab
  * Snapshot statistics: number, state, total size.
  * Volume statistics: number, state, total size.
  * ElasticIPs: total and allocated.
+ * S3: number of buckets
 
 ```
 aws.stats["eu-west-1","addresses.allocated"]
@@ -65,13 +66,6 @@ aws.stats["eu-west-1","instances.state.shutting-down"]
 aws.stats["eu-west-1","instances.state.stopped"]
 aws.stats["eu-west-1","instances.state.stopping"]
 aws.stats["eu-west-1","instances.state.terminated"]
-aws.stats["eu-west-1","instances.type.m1_medium.pending"]
-aws.stats["eu-west-1","instances.type.m1_medium.running"]
-aws.stats["eu-west-1","instances.type.m1_medium.shutting-down"]
-aws.stats["eu-west-1","instances.type.m1_medium.stopped"]
-aws.stats["eu-west-1","instances.type.m1_medium.stopping"]
-aws.stats["eu-west-1","instances.type.m1_medium.terminated"]
-aws.stats["eu-west-1","instances.type.m1_medium.total"]
 aws.stats["eu-west-1","instances.type.m1_small.pending"]
 aws.stats["eu-west-1","instances.type.m1_small.running"]
 aws.stats["eu-west-1","instances.type.m1_small.shutting-down"]
@@ -142,6 +136,7 @@ aws.stats["eu-west-1","instances.type.t2_small.stopped"]
 aws.stats["eu-west-1","instances.type.t2_small.stopping"]
 aws.stats["eu-west-1","instances.type.t2_small.terminated"]
 aws.stats["eu-west-1","instances.type.t2_small.total"]
+aws.stats["eu-west-1","s3.buckets"]
 aws.stats["eu-west-1","snapshots.size"]
 aws.stats["eu-west-1","snapshots.state.completed"]
 aws.stats["eu-west-1","snapshots.state.error"]
