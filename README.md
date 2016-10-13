@@ -50,12 +50,12 @@
 
 This is a sample of the data that can be retrieved by zabbix-aws-status into Zabbix:
  
- * This information is per region
+## Per region information
+
  * State statistics per instance type and total.
  * Snapshot statistics: number, state, total size.
  * Volume statistics: number, state, total size.
  * ElasticIPs: total and allocated.
- * S3: number of buckets
 
 ```
 aws.stats["eu-west-1","addresses.allocated"]
@@ -138,7 +138,6 @@ aws.stats["eu-west-1","instances.type.t2_small.stopped"]
 aws.stats["eu-west-1","instances.type.t2_small.stopping"]
 aws.stats["eu-west-1","instances.type.t2_small.terminated"]
 aws.stats["eu-west-1","instances.type.t2_small.total"]
-aws.stats["eu-west-1","s3.buckets"]
 aws.stats["eu-west-1","snapshots.size"]
 aws.stats["eu-west-1","snapshots.state.completed"]
 aws.stats["eu-west-1","snapshots.state.error"]
@@ -150,5 +149,13 @@ aws.stats["eu-west-1","volumes.state.deleted"]
 aws.stats["eu-west-1","volumes.state.deleting"]
 aws.stats["eu-west-1","volumes.state.error"]
 aws.stats["eu-west-1","volumes.state.in-use"]
+```
+
+## Global information
+
+ * S3: number of buckets
 
 ```
+aws.stats["global","s3.buckets"]
+```
+
