@@ -142,6 +142,7 @@ def extract_data(region, owner_id=None):
 
     ec2_client = session.client('ec2', region_name=region)
 
+    # Allocated and total ElasticIPs
     addresses = ec2_client.describe_addresses()
     for address in addresses['Addresses']:
         if address.get('AllocationId'):
@@ -149,6 +150,7 @@ def extract_data(region, owner_id=None):
         if address.get('PublicIp'):
             result['addresses']['total'] += 1
 
+    # Create filter to avoid listing all public snapshots
     if owner_id:
         resource_filter = [{
             'Name': 'owner-id',
@@ -183,7 +185,7 @@ def extract_data(region, owner_id=None):
 def discover_region(region, options):
     global discovery
 
-    # pretend to do some lengthy work.
+    # Extract data from this region
     result = extract_data(region, owner_id=options.owner_id)
 
     if options.subject == 'instancetypes':
@@ -223,6 +225,7 @@ def discover_worker():
 def discover(options):
     global discovery
 
+    # Select target regions
     if options.region:
         target_regions = [options.region]
     else:
@@ -233,11 +236,11 @@ def discover(options):
         t = threading.Thread(target=discover_worker, daemon=True)
         t.start()
 
-    # stuff work items on the queue.
+    # Insert target regions in the work queue
     for region in target_regions:
         q.put([region, options])
 
-    # block until all tasks are done
+    # Block until all tasks are done
     q.join()
 
     sys.stdout.write(json.dumps(discovery, sort_keys=True, indent=2))
@@ -303,7 +306,7 @@ def main():
 
     subparsers = parser.add_subparsers(dest='command')
 
-    # Set up 'send' command.
+    # Set up 'send' command
     subparser = subparsers.add_parser(
         'send',
         help='submit data through Zabbix sender')
@@ -326,7 +329,7 @@ def main():
         type=str, required=False, default=None,
         help='host name as registered in the Zabbix frontend')
 
-    # Set up 'discover' command.
+    # Set up 'discover' command
     subparser = subparsers.add_parser(
         'discover',
         help='generate Zabbix discovery schema')
@@ -336,13 +339,13 @@ def main():
 
     options = parser.parse_args()
 
-    # Check required arguments.
+    # Check required arguments
     if options.command == 'send':
         if options.zabbix_config is None and options.zabbix_server is None:
             parser.print_help()
             sys.exit(1)
 
-    # Execute command.
+    # Execute command
     globals()[options.command](options)
     sys.exit(0)
 
