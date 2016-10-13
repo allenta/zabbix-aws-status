@@ -103,6 +103,9 @@ def extract_data(region, owner_id=None):
                 'in-use': 0
             },
             'size': 0
+        },
+        's3': {
+            'buckets': 0
         }
     }
 
@@ -178,6 +181,13 @@ def extract_data(region, owner_id=None):
             result['volumes']['state'][v.state] = 1
 
         result['volumes']['size'] += v.size
+
+    s3 = session.resource('s3', region_name=region)
+
+    buckets = s3.buckets.all()
+
+    for b in buckets:
+        result['s3']['buckets'] += 1
 
     return result
 
