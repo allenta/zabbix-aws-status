@@ -32,6 +32,8 @@ REGIONS = {
     'sa-east-1': 'South America (São Paulo)'
 }
 
+GLOBAL_REGION = 'global'
+
 SUBJECTS = {
     'instancetypes': None,
     'regions': None,
@@ -63,131 +65,138 @@ def flatten(d, parent_key='', separator='.'):
 def extract_data(region, owner_id=None):
 
     session = boto3.session.Session()
-    ec2 = session.resource('ec2', region_name=region)
 
-    result = {
-        'instances': {
-            'monitoring': {
-                'enabled': 0,
-                'disabled': 0
+    if region != GLOBAL_REGION:
+
+        result = {
+            'instances': {
+                'monitoring': {
+                    'enabled': 0,
+                    'disabled': 0
+                },
+                'state': {
+                    'pending': 0,
+                    'running': 0,
+                    'shutting-down': 0,
+                    'stopping': 0,
+                    'stopped': 0,
+                    'terminated': 0
+                },
+                'type': dict()
             },
-            'state': {
-                'pending': 0,
-                'running': 0,
-                'shutting-down': 0,
-                'stopping': 0,
-                'stopped': 0,
-                'terminated': 0
+            'addresses': {
+                'allocated': 0,
+                'total': 0
             },
-            'type': dict()
-        },
-        'addresses': {
-            'allocated': 0,
-            'total': 0
-        },
-        'snapshots': {
-            'state': {
-                'completed': 0,
-                'error': 0,
-                'pending': 0
+            'snapshots': {
+                'state': {
+                    'completed': 0,
+                    'error': 0,
+                    'pending': 0
+                },
+                'size': 0
             },
-            'size': 0
-        },
-        'volumes': {
-            'state': {
-                'available': 0,
-                'creating': 0,
-                'deleted': 0,
-                'deleting': 0,
-                'error': 0,
-                'in-use': 0
-            },
-            'size': 0
-        },
-        's3': {
-            'buckets': 0
-        }
-    }
-
-    instances = ec2.instances.all()
-
-    for instance in instances:
-
-        # Instance by monitoring state
-        if instance.monitoring['State'] in result['instances']['monitoring']:
-                result['instances']['monitoring'][instance.monitoring['State']] += 1
-        else:
-            result['instances']['monitoring'][instance.monitoring['State']] = 1
-
-        # Instances by type
-        instance_type = instance.instance_type.replace('.', '_')
-        if instance_type in result['instances']['type']:
-            result['instances']['type'][instance_type]['total'] += 1
-        else:
-            result['instances']['type'][instance_type] = {
-                'total': 1,
-                'pending': 0,
-                'running': 0,
-                'shutting-down': 0,
-                'stopping': 0,
-                'stopped': 0,
-                'terminated': 0
+            'volumes': {
+                'state': {
+                    'available': 0,
+                    'creating': 0,
+                    'deleted': 0,
+                    'deleting': 0,
+                    'error': 0,
+                    'in-use': 0
+                },
+                'size': 0
             }
+        }
 
-        # Instances state by type
-        result['instances']['type'][instance_type][instance.state['Name']] += 1
+        ec2 = session.resource('ec2', region_name=region)
+        instances = ec2.instances.all()
 
-        # Instances by state
-        if instance.state['Name'] in result['instances']['state']:
-            result['instances']['state'][instance.state['Name']] += 1
+        for instance in instances:
+
+            # Instance by monitoring state
+            if instance.monitoring['State'] in result['instances']['monitoring']:
+                    result['instances']['monitoring'][instance.monitoring['State']] += 1
+            else:
+                result['instances']['monitoring'][instance.monitoring['State']] = 1
+
+            # Instances by type
+            instance_type = instance.instance_type.replace('.', '_')
+            if instance_type in result['instances']['type']:
+                result['instances']['type'][instance_type]['total'] += 1
+            else:
+                result['instances']['type'][instance_type] = {
+                    'total': 1,
+                    'pending': 0,
+                    'running': 0,
+                    'shutting-down': 0,
+                    'stopping': 0,
+                    'stopped': 0,
+                    'terminated': 0
+                }
+
+            # Instances state by type
+            result['instances']['type'][instance_type][instance.state['Name']] += 1
+
+            # Instances by state
+            if instance.state['Name'] in result['instances']['state']:
+                result['instances']['state'][instance.state['Name']] += 1
+            else:
+                result['instances']['state'][instance.state['Name']] = 1
+
+        ec2_client = session.client('ec2', region_name=region)
+
+        # Allocated and total ElasticIPs
+        addresses = ec2_client.describe_addresses()
+        for address in addresses['Addresses']:
+            if address.get('AllocationId'):
+                result['addresses']['allocated'] += 1
+            if address.get('PublicIp'):
+                result['addresses']['total'] += 1
+
+        # Create filter to avoid listing all public snapshots
+        if owner_id:
+            resource_filter = [{
+                'Name': 'owner-id',
+                'Values': owner_id.split(',')
+            }]
         else:
-            result['instances']['state'][instance.state['Name']] = 1
+            resource_filter = []
 
-    ec2_client = session.client('ec2', region_name=region)
+        snapshots = ec2.snapshots.filter(Filters=resource_filter)
 
-    # Allocated and total ElasticIPs
-    addresses = ec2_client.describe_addresses()
-    for address in addresses['Addresses']:
-        if address.get('AllocationId'):
-            result['addresses']['allocated'] += 1
-        if address.get('PublicIp'):
-            result['addresses']['total'] += 1
+        for s in snapshots:
+            if s.state in result['snapshots']['state']:
+                result['snapshots']['state'][s.state] += 1
+            else:
+                result['snapshots']['state'][s.state] = 1
 
-    # Create filter to avoid listing all public snapshots
-    if owner_id:
-        resource_filter = [{
-            'Name': 'owner-id',
-            'Values': owner_id.split(',')
-        }]
+            result['snapshots']['size'] += s.volume_size
+
+        volumes = ec2.volumes.all()
+
+        for v in volumes:
+            if v.state in result['volumes']['state']:
+                result['volumes']['state'][v.state] += 1
+            else:
+                result['volumes']['state'][v.state] = 1
+
+            result['volumes']['size'] += v.size
+
     else:
-        resource_filter = []
+        # Global region
 
-    snapshots = ec2.snapshots.filter(Filters=resource_filter)
+        result = {
+            's3': {
+                'buckets': 0
+            }
+        }
 
-    for s in snapshots:
-        if s.state in result['snapshots']['state']:
-            result['snapshots']['state'][s.state] += 1
-        else:
-            result['snapshots']['state'][s.state] = 1
+        s3 = session.resource('s3')
+        buckets = s3.buckets.all()
 
-        result['snapshots']['size'] += s.volume_size
-
-    volumes = ec2.volumes.all()
-
-    for v in volumes:
-        if v.state in result['volumes']['state']:
-            result['volumes']['state'][v.state] += 1
-        else:
-            result['volumes']['state'][v.state] = 1
-
-        result['volumes']['size'] += v.size
-
-    s3 = session.resource('s3', region_name=region)
-
-    buckets = s3.buckets.all()
-
-    for b in buckets:
-        result['s3']['buckets'] += 1
+        for b in buckets:
+            result['s3']['buckets'] += 1
 
     return result
 

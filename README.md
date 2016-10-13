@@ -34,10 +34,12 @@
 
 5. Add required jobs to the ``zabbix`` user crontab. This will send AWS metrics through Zabbix Sender:
   ```
+  * * *  * * root . /usr/local/lib/zabbix-aws-status/bin/activate && /usr/local/bin/zabbix-aws-status.py -r global -o owner-id send -c /etc/zabbix/zabbix_agentd.conf > /dev/null 2>&1
   * * *  * * root . /usr/local/lib/zabbix-aws-status/bin/activate && /usr/local/bin/zabbix-aws-status.py -r eu-west-1 -o owner-id send -c /etc/zabbix/zabbix_agentd.conf > /dev/null 2>&1
   ```
   * Change ``owner-id`` to your AWS Owner ID.
   * It's recommended that you add one cron job per used region so you can avoid trying to get data from unused regions.
+  * Note the first cron job uses "global" as region. This is used to fetch information about resources that don't depend on a region, like S3.
 
 6. Import the template ``template-aws-status.xml``.
 
