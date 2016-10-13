@@ -22,10 +22,12 @@
   UserParameter=awsstats.discovery[*],. /usr/local/lib/zabbix-aws-status/bin/activate && /usr/local/bin/zabbix-aws-status.py -r '$1' -o '$2' discover $3
   ```
 	
-  You can check if you hace the right permission using AWS CLI:
+  You can check if you have the right permissions using [AWS CLI](https://aws.amazon.com/cli/):
 
   ```
-  aws ec2 --region eu-west-1 describe-instances
+  $ aws ec2 --region eu-west-1 describe-instances
+  $ aws ec2 --region eu-west-1 describe-snapshots
+  $ aws ec2 --region eu-west-1 describe-volumes
   ```
 
 4. Make sure you have ``zabbix-sender`` installed.
@@ -50,6 +52,7 @@ This is a sample of the data that can be retrieved by zabbix-aws-status into Zab
  * State statistics per instance type and total.
  * Snapshot statistics: number, state, total size.
  * Volume statistics: number, state, total size.
+ * ElasticIPs: total and allocated.
 
 ```
 aws.stats["eu-west-1","addresses.allocated"]
