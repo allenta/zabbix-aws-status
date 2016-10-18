@@ -20,6 +20,7 @@ from queue import Queue
 
 REGIONS = {
     'us-east-1': 'US East (N. Virginia)',
+    'us-east-2': 'US East (Ohio)',
     'us-west-2': 'US West (Oregon)',
     'us-west-1': 'US West (N. California)',
     'eu-west-1': 'EU (Ireland)',
