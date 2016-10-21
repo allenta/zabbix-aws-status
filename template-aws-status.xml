@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>3.0</version>
-    <date>2016-10-13T14:09:15Z</date>
+    <date>2016-10-21T11:19:32Z</date>
     <groups>
         <group>
             <name>Templates ALL</name>
@@ -94,12 +94,12 @@
                     <description/>
                     <item_prototypes>
                         <item_prototype>
-                            <name>AWS Stats[{#AWSREGION}] - Number of {#INSTANCETYPE} type pending</name>
+                            <name>AWS Stats[{$OWNER_ID}, {#AWSREGION}] - Number of {#INSTANCETYPE} type pending</name>
                             <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <snmp_oid/>
-                            <key>aws.stats[&quot;{#AWSREGION}&quot;,&quot;instances.type.{#INSTANCETYPE}.pending&quot;]</key>
+                            <key>aws.stats[&quot;{$OWNER_ID}&quot;, &quot;{#AWSREGION}&quot;,&quot;instances.type.{#INSTANCETYPE}.pending&quot;]</key>
                             <delay>0</delay>
                             <history>10</history>
                             <trends>10</trends>
@@ -134,12 +134,12 @@
                             <application_prototypes/>
                         </item_prototype>
                         <item_prototype>
-                            <name>AWS Stats[{#AWSREGION}] - Number of {#INSTANCETYPE} type running</name>
+                            <name>AWS Stats[{$OWNER_ID}, {#AWSREGION}] - Number of {#INSTANCETYPE} type running</name>
                             <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <snmp_oid/>
-                            <key>aws.stats[&quot;{#AWSREGION}&quot;,&quot;instances.type.{#INSTANCETYPE}.running&quot;]</key>
+                            <key>aws.stats[&quot;{$OWNER_ID}&quot;, &quot;{#AWSREGION}&quot;,&quot;instances.type.{#INSTANCETYPE}.running&quot;]</key>
                             <delay>0</delay>
                             <history>10</history>
                             <trends>10</trends>
@@ -174,12 +174,12 @@
                             <application_prototypes/>
                         </item_prototype>
                         <item_prototype>
-                            <name>AWS Stats[{#AWSREGION}] - Number of {#INSTANCETYPE} type shutting-down</name>
+                            <name>AWS Stats[{$OWNER_ID}, {#AWSREGION}] - Number of {#INSTANCETYPE} type shutting-down</name>
                             <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <snmp_oid/>
-                            <key>aws.stats[&quot;{#AWSREGION}&quot;,&quot;instances.type.{#INSTANCETYPE}.shutting-down&quot;]</key>
+                            <key>aws.stats[&quot;{$OWNER_ID}&quot;,&quot;{#AWSREGION}&quot;,&quot;instances.type.{#INSTANCETYPE}.shutting-down&quot;]</key>
                             <delay>0</delay>
                             <history>10</history>
                             <trends>10</trends>
@@ -214,12 +214,12 @@
                             <application_prototypes/>
                         </item_prototype>
                         <item_prototype>
-                            <name>AWS Stats[{#AWSREGION}] - Number of {#INSTANCETYPE} type stopped</name>
+                            <name>AWS Stats[{$OWNER_ID}, {#AWSREGION}] - Number of {#INSTANCETYPE} type stopped</name>
                             <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <snmp_oid/>
-                            <key>aws.stats[&quot;{#AWSREGION}&quot;,&quot;instances.type.{#INSTANCETYPE}.stopped&quot;]</key>
+                            <key>aws.stats[&quot;{$OWNER_ID}&quot;,&quot;{#AWSREGION}&quot;,&quot;instances.type.{#INSTANCETYPE}.stopped&quot;]</key>
                             <delay>0</delay>
                             <history>10</history>
                             <trends>10</trends>
@@ -254,12 +254,12 @@
                             <application_prototypes/>
                         </item_prototype>
                         <item_prototype>
-                            <name>AWS Stats[{#AWSREGION}] - Number of {#INSTANCETYPE} type stopping</name>
+                            <name>AWS Stats[{$OWNER_ID}, {#AWSREGION}] - Number of {#INSTANCETYPE} type stopping</name>
                             <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <snmp_oid/>
-                            <key>aws.stats[&quot;{#AWSREGION}&quot;,&quot;instances.type.{#INSTANCETYPE}.stopping&quot;]</key>
+                            <key>aws.stats[&quot;{$OWNER_ID}&quot;,&quot;{#AWSREGION}&quot;,&quot;instances.type.{#INSTANCETYPE}.stopping&quot;]</key>
                             <delay>0</delay>
                             <history>10</history>
                             <trends>10</trends>
@@ -294,12 +294,12 @@
                             <application_prototypes/>
                         </item_prototype>
                         <item_prototype>
-                            <name>AWS Stats[{#AWSREGION}] - Number of {#INSTANCETYPE} type terminated</name>
+                            <name>AWS Stats[{$OWNER_ID}, {#AWSREGION}] - Number of {#INSTANCETYPE} type terminated</name>
                             <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <snmp_oid/>
-                            <key>aws.stats[&quot;{#AWSREGION}&quot;,&quot;instances.type.{#INSTANCETYPE}.terminated&quot;]</key>
+                            <key>aws.stats[&quot;{$OWNER_ID}&quot;,&quot;{#AWSREGION}&quot;,&quot;instances.type.{#INSTANCETYPE}.terminated&quot;]</key>
                             <delay>0</delay>
                             <history>10</history>
                             <trends>10</trends>
@@ -334,12 +334,12 @@
                             <application_prototypes/>
                         </item_prototype>
                         <item_prototype>
-                            <name>AWS Stats[{#AWSREGION}] - Number of {#INSTANCETYPE} type</name>
+                            <name>AWS Stats[{$OWNER_ID}, {#AWSREGION}] - Number of {#INSTANCETYPE} type</name>
                             <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <snmp_oid/>
-                            <key>aws.stats[&quot;{#AWSREGION}&quot;,&quot;instances.type.{#INSTANCETYPE}.total&quot;]</key>
+                            <key>aws.stats[&quot;{$OWNER_ID}&quot;,&quot;{#AWSREGION}&quot;,&quot;instances.type.{#INSTANCETYPE}.total&quot;]</key>
                             <delay>0</delay>
                             <history>10</history>
                             <trends>10</trends>
@@ -412,12 +412,12 @@
                     <description/>
                     <item_prototypes>
                         <item_prototype>
-                            <name>AWS Stats[{#AWSREGION}] - Allocated addresses</name>
+                            <name>AWS Stats[{$OWNER_ID}, {#AWSREGION}] - Allocated addresses</name>
                             <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <snmp_oid/>
-                            <key>aws.stats[&quot;{#AWSREGION}&quot;,&quot;addresses.allocated&quot;]</key>
+                            <key>aws.stats[&quot;{$OWNER_ID}&quot;,&quot;{#AWSREGION}&quot;,&quot;addresses.allocated&quot;]</key>
                             <delay>0</delay>
                             <history>30</history>
                             <trends>365</trends>
@@ -452,12 +452,12 @@
                             <application_prototypes/>
                         </item_prototype>
                         <item_prototype>
-                            <name>AWS Stats[{#AWSREGION}] - Public addresses</name>
+                            <name>AWS Stats[{$OWNER_ID}, {#AWSREGION}] - Public addresses</name>
                             <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <snmp_oid/>
-                            <key>aws.stats[&quot;{#AWSREGION}&quot;,&quot;addresses.total&quot;]</key>
+                            <key>aws.stats[&quot;{$OWNER_ID}&quot;,&quot;{#AWSREGION}&quot;,&quot;addresses.total&quot;]</key>
                             <delay>0</delay>
                             <history>30</history>
                             <trends>365</trends>
@@ -492,12 +492,12 @@
                             <application_prototypes/>
                         </item_prototype>
                         <item_prototype>
-                            <name>AWS Stats[{#AWSREGION}] - Instances with monitoring disabled</name>
+                            <name>AWS Stats[{$OWNER_ID}, {#AWSREGION}] - Instances with monitoring disabled</name>
                             <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <snmp_oid/>
-                            <key>aws.stats[&quot;{#AWSREGION}&quot;,&quot;instances.monitoring.disabled&quot;]</key>
+                            <key>aws.stats[&quot;{$OWNER_ID}&quot;,&quot;{#AWSREGION}&quot;,&quot;instances.monitoring.disabled&quot;]</key>
                             <delay>0</delay>
                             <history>30</history>
                             <trends>365</trends>
@@ -532,12 +532,12 @@
                             <application_prototypes/>
                         </item_prototype>
                         <item_prototype>
-                            <name>AWS Stats[{#AWSREGION}] - Instances with monitoring enabled</name>
+                            <name>AWS Stats[{$OWNER_ID}, {#AWSREGION}] - Instances with monitoring enabled</name>
                             <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <snmp_oid/>
-                            <key>aws.stats[&quot;{#AWSREGION}&quot;,&quot;instances.monitoring.enabled&quot;]</key>
+                            <key>aws.stats[&quot;{$OWNER_ID}&quot;,&quot;{#AWSREGION}&quot;,&quot;instances.monitoring.enabled&quot;]</key>
                             <delay>0</delay>
                             <history>30</history>
                             <trends>365</trends>
@@ -572,12 +572,12 @@
                             <application_prototypes/>
                         </item_prototype>
                         <item_prototype>
-                            <name>AWS Stats[{#AWSREGION}] - Instances pending</name>
+                            <name>AWS Stats[{$OWNER_ID}, {#AWSREGION}] - Instances pending</name>
                             <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <snmp_oid/>
-                            <key>aws.stats[&quot;{#AWSREGION}&quot;,&quot;instances.state.pending&quot;]</key>
+                            <key>aws.stats[&quot;{$OWNER_ID}&quot;,&quot;{#AWSREGION}&quot;,&quot;instances.state.pending&quot;]</key>
                             <delay>0</delay>
                             <history>30</history>
                             <trends>365</trends>
@@ -612,12 +612,12 @@
                             <application_prototypes/>
                         </item_prototype>
                         <item_prototype>
-                            <name>AWS Stats[{#AWSREGION}] - Instances running</name>
+                            <name>AWS Stats[{$OWNER_ID}, {#AWSREGION}] - Instances running</name>
                             <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <snmp_oid/>
-                            <key>aws.stats[&quot;{#AWSREGION}&quot;,&quot;instances.state.running&quot;]</key>
+                            <key>aws.stats[&quot;{$OWNER_ID}&quot;,&quot;{#AWSREGION}&quot;,&quot;instances.state.running&quot;]</key>
                             <delay>0</delay>
                             <history>30</history>
                             <trends>365</trends>
@@ -652,12 +652,12 @@
                             <application_prototypes/>
                         </item_prototype>
                         <item_prototype>
-                            <name>AWS Stats[{#AWSREGION}] - Instances shutting-down</name>
+                            <name>AWS Stats[{$OWNER_ID}, {#AWSREGION}] - Instances shutting-down</name>
                             <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <snmp_oid/>
-                            <key>aws.stats[&quot;{#AWSREGION}&quot;,&quot;instances.state.shutting-down&quot;]</key>
+                            <key>aws.stats[&quot;{$OWNER_ID}&quot;,&quot;{#AWSREGION}&quot;,&quot;instances.state.shutting-down&quot;]</key>
                             <delay>0</delay>
                             <history>30</history>
                             <trends>365</trends>
@@ -692,12 +692,12 @@
                             <application_prototypes/>
                         </item_prototype>
                         <item_prototype>
-                            <name>AWS Stats[{#AWSREGION}] - Instances stopped</name>
+                            <name>AWS Stats[{$OWNER_ID}, {#AWSREGION}] - Instances stopped</name>
                             <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <snmp_oid/>
-                            <key>aws.stats[&quot;{#AWSREGION}&quot;,&quot;instances.state.stopped&quot;]</key>
+                            <key>aws.stats[&quot;{$OWNER_ID}&quot;,&quot;{#AWSREGION}&quot;,&quot;instances.state.stopped&quot;]</key>
                             <delay>0</delay>
                             <history>30</history>
                             <trends>365</trends>
@@ -732,12 +732,12 @@
                             <application_prototypes/>
                         </item_prototype>
                         <item_prototype>
-                            <name>AWS Stats[{#AWSREGION}] - Instances stopping</name>
+                            <name>AWS Stats[{$OWNER_ID}, {#AWSREGION}] - Instances stopping</name>
                             <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <snmp_oid/>
-                            <key>aws.stats[&quot;{#AWSREGION}&quot;,&quot;instances.state.stopping&quot;]</key>
+                            <key>aws.stats[&quot;{$OWNER_ID}&quot;,&quot;{#AWSREGION}&quot;,&quot;instances.state.stopping&quot;]</key>
                             <delay>0</delay>
                             <history>30</history>
                             <trends>365</trends>
@@ -772,12 +772,12 @@
                             <application_prototypes/>
                         </item_prototype>
                         <item_prototype>
-                            <name>AWS Stats[{#AWSREGION}] - Instances terminated</name>
+                            <name>AWS Stats[{$OWNER_ID}, {#AWSREGION}] - Instances terminated</name>
                             <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <snmp_oid/>
-                            <key>aws.stats[&quot;{#AWSREGION}&quot;,&quot;instances.state.terminated&quot;]</key>
+                            <key>aws.stats[&quot;{$OWNER_ID}&quot;,&quot;{#AWSREGION}&quot;,&quot;instances.state.terminated&quot;]</key>
                             <delay>0</delay>
                             <history>30</history>
                             <trends>365</trends>
@@ -812,12 +812,12 @@
                             <application_prototypes/>
                         </item_prototype>
                         <item_prototype>
-                            <name>AWS Stats[{#AWSREGION}] - Total size of snapshots</name>
+                            <name>AWS Stats[{$OWNER_ID}, {#AWSREGION}] - Total size of snapshots</name>
                             <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <snmp_oid/>
-                            <key>aws.stats[&quot;{#AWSREGION}&quot;,&quot;snapshots.size&quot;]</key>
+                            <key>aws.stats[&quot;{$OWNER_ID}&quot;,&quot;{#AWSREGION}&quot;,&quot;snapshots.size&quot;]</key>
                             <delay>0</delay>
                             <history>30</history>
                             <trends>365</trends>
@@ -852,12 +852,12 @@
                             <application_prototypes/>
                         </item_prototype>
                         <item_prototype>
-                            <name>AWS Stats[{#AWSREGION}] - Snapshots in state completed</name>
+                            <name>AWS Stats[{$OWNER_ID}, {#AWSREGION}] - Snapshots in state completed</name>
                             <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <snmp_oid/>
-                            <key>aws.stats[&quot;{#AWSREGION}&quot;,&quot;snapshots.state.completed&quot;]</key>
+                            <key>aws.stats[&quot;{$OWNER_ID}&quot;,&quot;{#AWSREGION}&quot;,&quot;snapshots.state.completed&quot;]</key>
                             <delay>0</delay>
                             <history>30</history>
                             <trends>365</trends>
@@ -892,12 +892,12 @@
                             <application_prototypes/>
                         </item_prototype>
                         <item_prototype>
-                            <name>AWS Stats[{#AWSREGION}] - Snapshots in state error</name>
+                            <name>AWS Stats[{$OWNER_ID}, {#AWSREGION}] - Snapshots in state error</name>
                             <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <snmp_oid/>
-                            <key>aws.stats[&quot;{#AWSREGION}&quot;,&quot;snapshots.state.error&quot;]</key>
+                            <key>aws.stats[&quot;{$OWNER_ID}&quot;, &quot;{#AWSREGION}&quot;,&quot;snapshots.state.error&quot;]</key>
                             <delay>0</delay>
                             <history>30</history>
                             <trends>365</trends>
@@ -932,12 +932,12 @@
                             <application_prototypes/>
                         </item_prototype>
                         <item_prototype>
-                            <name>AWS Stats[{#AWSREGION}] - Snapshots in state pending</name>
+                            <name>AWS Stats[{$OWNER_ID}, {#AWSREGION}] - Snapshots in state pending</name>
                             <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <snmp_oid/>
-                            <key>aws.stats[&quot;{#AWSREGION}&quot;,&quot;snapshots.state.pending&quot;]</key>
+                            <key>aws.stats[&quot;{$OWNER_ID}&quot;,&quot;{#AWSREGION}&quot;,&quot;snapshots.state.pending&quot;]</key>
                             <delay>0</delay>
                             <history>30</history>
                             <trends>365</trends>
@@ -972,12 +972,12 @@
                             <application_prototypes/>
                         </item_prototype>
                         <item_prototype>
-                            <name>AWS Stats[{#AWSREGION}] - Total size of volumes</name>
+                            <name>AWS Stats[{$OWNER_ID}, {#AWSREGION}] - Total size of volumes</name>
                             <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <snmp_oid/>
-                            <key>aws.stats[&quot;{#AWSREGION}&quot;,&quot;volumes.size&quot;]</key>
+                            <key>aws.stats[&quot;{$OWNER_ID}&quot;,&quot;{#AWSREGION}&quot;,&quot;volumes.size&quot;]</key>
                             <delay>0</delay>
                             <history>30</history>
                             <trends>365</trends>
@@ -1012,12 +1012,12 @@
                             <application_prototypes/>
                         </item_prototype>
                         <item_prototype>
-                            <name>AWS Stats[{#AWSREGION}] - Number of volumes in available state</name>
+                            <name>AWS Stats[{$OWNER_ID}, {#AWSREGION}] - Number of volumes in available state</name>
                             <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <snmp_oid/>
-                            <key>aws.stats[&quot;{#AWSREGION}&quot;,&quot;volumes.state.available&quot;]</key>
+                            <key>aws.stats[&quot;{$OWNER_ID}&quot;,&quot;{#AWSREGION}&quot;,&quot;volumes.state.available&quot;]</key>
                             <delay>0</delay>
                             <history>30</history>
                             <trends>365</trends>
@@ -1052,12 +1052,12 @@
                             <application_prototypes/>
                         </item_prototype>
                         <item_prototype>
-                            <name>AWS Stats[{#AWSREGION}] - Number of volumes in creating state</name>
+                            <name>AWS Stats[{$OWNER_ID}, {#AWSREGION}] - Number of volumes in creating state</name>
                             <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <snmp_oid/>
-                            <key>aws.stats[&quot;{#AWSREGION}&quot;,&quot;volumes.state.creating&quot;]</key>
+                            <key>aws.stats[&quot;{$OWNER_ID}&quot;,&quot;{#AWSREGION}&quot;,&quot;volumes.state.creating&quot;]</key>
                             <delay>0</delay>
                             <history>30</history>
                             <trends>365</trends>
@@ -1092,12 +1092,12 @@
                             <application_prototypes/>
                         </item_prototype>
                         <item_prototype>
-                            <name>AWS Stats[{#AWSREGION}] - Number of volumes in deleted state</name>
+                            <name>AWS Stats[{$OWNER_ID}, {#AWSREGION}] - Number of volumes in deleted state</name>
                             <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <snmp_oid/>
-                            <key>aws.stats[&quot;{#AWSREGION}&quot;,&quot;volumes.state.deleted&quot;]</key>
+                            <key>aws.stats[&quot;{$OWNER_ID}&quot;,&quot;{#AWSREGION}&quot;,&quot;volumes.state.deleted&quot;]</key>
                             <delay>0</delay>
                             <history>30</history>
                             <trends>365</trends>
@@ -1132,12 +1132,12 @@
                             <application_prototypes/>
                         </item_prototype>
                         <item_prototype>
-                            <name>AWS Stats[{#AWSREGION}] - Number of volumes in deleting state</name>
+                            <name>AWS Stats[{$OWNER_ID}, {#AWSREGION}] - Number of volumes in deleting state</name>
                             <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <snmp_oid/>
-                            <key>aws.stats[&quot;{#AWSREGION}&quot;,&quot;volumes.state.deleting&quot;]</key>
+                            <key>aws.stats[&quot;{$OWNER_ID}&quot;,&quot;{#AWSREGION}&quot;,&quot;volumes.state.deleting&quot;]</key>
                             <delay>0</delay>
                             <history>30</history>
                             <trends>365</trends>
@@ -1172,12 +1172,12 @@
                             <application_prototypes/>
                         </item_prototype>
                         <item_prototype>
-                            <name>AWS Stats[{#AWSREGION}] - Number of volumes in error state</name>
+                            <name>AWS Stats[{$OWNER_ID}, {#AWSREGION}] - Number of volumes in error state</name>
                             <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <snmp_oid/>
-                            <key>aws.stats[&quot;{#AWSREGION}&quot;,&quot;volumes.state.error&quot;]</key>
+                            <key>aws.stats[&quot;{$OWNER_ID}&quot;,&quot;{#AWSREGION}&quot;,&quot;volumes.state.error&quot;]</key>
                             <delay>0</delay>
                             <history>30</history>
                             <trends>365</trends>
@@ -1212,12 +1212,12 @@
                             <application_prototypes/>
                         </item_prototype>
                         <item_prototype>
-                            <name>AWS Stats[{#AWSREGION}] - Number of volumes in in-use state</name>
+                            <name>AWS Stats[{$OWNER_ID}, {#AWSREGION}] - Number of volumes in in-use state</name>
                             <type>2</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <snmp_oid/>
-                            <key>aws.stats[&quot;{#AWSREGION}&quot;,&quot;volumes.state.in-use&quot;]</key>
+                            <key>aws.stats[&quot;{$OWNER_ID}&quot;,&quot;{#AWSREGION}&quot;,&quot;volumes.state.in-use&quot;]</key>
                             <delay>0</delay>
                             <history>30</history>
                             <trends>365</trends>

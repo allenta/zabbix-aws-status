@@ -273,7 +273,8 @@ def send(options):
 
     data = ''.encode()
     for k, v in result.items():
-        row = '- aws.stats["%(region)s","%(key)s"] %(tst)d %(value)d\n' % {
+        row = '- aws.stats["%(owner_id)s","%(region)s","%(key)s"] %(tst)d %(value)d\n' % {
+            'owner_id': options.owner_id,
             'region': options.region,
             'key': k,
             'tst': now,
@@ -321,7 +322,7 @@ def main():
                         type=str, required=False, default=None,
                         help='AWS region')
     parser.add_argument('-o', '--owner-id', dest='owner_id',
-                        type=str, required=False, default=None,
+                        type=str, required=True, default=None,
                         help='Owner id(s). Comma separated ids.')
 
     subparsers = parser.add_subparsers(dest='command')
